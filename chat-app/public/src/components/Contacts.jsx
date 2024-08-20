@@ -143,7 +143,7 @@ const Container = styled.div`
         color: white;
       }
     }
-    @media screen and (min-width: 720px) and (max-width: 1080px) {
+    @media screen and (min-width: 480px) and (max-width: 1080px) {
       gap: 0.5rem;
       .username {
         h2 {
