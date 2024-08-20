@@ -14,7 +14,7 @@ export default function Chat() {
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
-  const [isChatVisible, setIsChatVisible] = useState(true); // State to control chat visibility
+  const [isChatOpen, setIsChatOpen] = useState(true); // State to control chat visibility
 
   useEffect(() => {
     if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
@@ -49,24 +49,27 @@ export default function Chat() {
 
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
+    setIsChatOpen(true); // Open the chat component when a contact is selected
   };
 
   const handleCloseChat = () => {
-    setIsChatVisible(false); // Hide the chat component
+    setIsChatOpen(false); // Close the chat component
   };
-
-  if (!isChatVisible) return null; // Render nothing if the chat is closed
 
   return (
     <>
       <Container>
-        <CloseButton onClick={handleCloseChat}>×</CloseButton>
         <div className="container">
           <Contacts contacts={contacts} changeChat={handleChatChange} />
-          {currentChat === undefined ? (
-            <Welcome />
-          ) : (
-            <ChatContainer currentChat={currentChat} socket={socket} />
+          {isChatOpen && (
+            <>
+              <CloseButton onClick={handleCloseChat}>×</CloseButton>
+              {currentChat === undefined ? (
+                <Welcome />
+              ) : (
+                <ChatContainer currentChat={currentChat} socket={socket} />
+              )}
+            </>
           )}
         </div>
       </Container>
@@ -83,7 +86,6 @@ const Container = styled.div`
   gap: 1rem;
   align-items: center;
   background-color: #131324;
-  position: relative;
 
   .container {
     height: 85vh;
@@ -92,6 +94,7 @@ const Container = styled.div`
     display: grid;
     grid-template-columns: 25% 75%;
     position: relative;
+
     @media screen and (min-width: 480px) and (max-width: 1080px) {
       grid-template-columns: 35% 65%;
     }
@@ -103,7 +106,7 @@ const CloseButton = styled.button`
   top: 10px;
   right: 20px;
   background-color: transparent;
-  color: black;
+  color: white;
   border: none;
   font-size: 2rem;
   cursor: pointer;
