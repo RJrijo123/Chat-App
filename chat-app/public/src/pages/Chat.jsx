@@ -48,15 +48,16 @@ export default function Chat() {
   };
   return (
     <>
-      <Container>
+      <Container><div>
         <div className="container">
           <Contacts contacts={contacts} changeChat={handleChatChange} />
           {currentChat === undefined ? (
-            <Welcome />,<Logout />
+            <Welcome />
           ) : (
             <ChatContainer currentChat={currentChat} socket={socket} />
           )}
-          
+          </div>
+          <Logout/>
         </div>
         
       </Container>
