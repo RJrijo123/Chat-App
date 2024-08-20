@@ -8,24 +8,21 @@ import ChatContainer from "../components/ChatContainer";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
 
-
 export default function Chat() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook for navigation
   const socket = useRef();
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
-  useEffect(async () => {
+  
+  useEffect(() => {
     if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
       navigate("/login");
     } else {
-      setCurrentUser(
-        await JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-        )
-      );
+      setCurrentUser(JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)));
     }
-  }, []);
+  }, [navigate]);
+  
   useEffect(() => {
     if (currentUser) {
       socket.current = io(host);
@@ -33,32 +30,38 @@ export default function Chat() {
     }
   }, [currentUser]);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (currentUser) {
       if (currentUser.isAvatarImageSet) {
-        const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
-        setContacts(data.data);
+        axios.get(`${allUsersRoute}/${currentUser._id}`).then(({ data }) => {
+          setContacts(data);
+        });
       } else {
         navigate("/setAvatar");
       }
     }
-  }, [currentUser]);
+  }, [currentUser, navigate]);
+
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   };
+
+  const handleCloseChat = () => {
+    navigate("/"); // Navigate back to the Contacts page
+  };
+
   return (
     <>
       <Container>
         <div className="container">
+          <button onClick={handleCloseChat}>Close Chat</button>
           <Contacts contacts={contacts} changeChat={handleChatChange} />
           {currentChat === undefined ? (
             <Welcome />
           ) : (
             <ChatContainer currentChat={currentChat} socket={socket} />
           )}
-         
         </div>
-        
       </Container>
     </>
   );
@@ -82,5 +85,16 @@ const Container = styled.div`
     @media screen and (min-width: 480px) and (max-width: 1080px) {
       grid-template-columns: 35% 65%;
     }
+  // your existing styles
+  button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
   }
 `;
