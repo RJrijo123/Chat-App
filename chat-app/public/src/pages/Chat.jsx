@@ -7,6 +7,7 @@ import { allUsersRoute, host } from "../utils/APIRoutes";
 import ChatContainer from "../components/ChatContainer";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
+import Logout from "./Logout";
 
 export default function Chat() {
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ export default function Chat() {
             <ChatContainer currentChat={currentChat} socket={socket} />
           )}
         </div>
+        <Logout />
       </Container>
     </>
   );
