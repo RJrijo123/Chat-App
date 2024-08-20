@@ -58,18 +58,18 @@ export default function Chat() {
 
   return (
     <>
-      <Container>
+      <Container isChatOpen={isChatOpen}>
         <div className="container">
           <Contacts contacts={contacts} changeChat={handleChatChange} />
           {isChatOpen && (
-            <>
+            <div className="chat-container">
               <CloseButton onClick={handleCloseChat}>×</CloseButton>
               {currentChat === undefined ? (
                 <Welcome />
               ) : (
                 <ChatContainer currentChat={currentChat} socket={socket} />
               )}
-            </>
+            </div>
           )}
         </div>
       </Container>
@@ -92,12 +92,16 @@ const Container = styled.div`
     width: 85vw;
     background-color: #00000076;
     display: grid;
-    grid-template-columns: 25% 75%;
+    grid-template-columns: ${({ isChatOpen }) => (isChatOpen ? "25% 75%" : "100%")};
     position: relative;
 
     @media screen and (min-width: 480px) and (max-width: 1080px) {
-      grid-template-columns: 35% 65%;
+      grid-template-columns: ${({ isChatOpen }) => (isChatOpen ? "35% 65%" : "100%")};
     }
+  }
+
+  .chat-container {
+    position: relative;
   }
 `;
 
@@ -106,7 +110,7 @@ const CloseButton = styled.button`
   top: 10px;
   right: 20px;
   background-color: transparent;
-  color: white;
+  color: black;
   border: none;
   font-size: 2rem;
   cursor: pointer;
