@@ -151,5 +151,20 @@ const Container = styled.div`
         }
       }
     }
+      @media (max-width: 768px) {
+  .brand {
+    align-items: center; /* Ensure alignment is centered */
+    justify-content: center; /* Ensure items are centered */
+    
+    img {
+      height: 1.5rem; /* Decrease image size */
+    }
+    h3 {
+      font-size: 1rem; /* Decrease font size */
+      color: white; /* Ensure text color is white */
+    }
+  }
+}
+
   }
 `;
