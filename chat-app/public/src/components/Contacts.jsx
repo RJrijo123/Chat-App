@@ -152,8 +152,15 @@ const Container = styled.div`
       }
       .avatar {
         img {
+          height: 2rem;
+        }
+      }
+      .contacts {
+        .avatar {
+        img {
           height: 1.5rem;
         }
+      }
       }
     }
   }
