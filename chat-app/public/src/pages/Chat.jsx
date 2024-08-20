@@ -14,6 +14,7 @@ export default function Chat() {
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
+  const [isChatVisible, setIsChatVisible] = useState(true); // State to control chat visibility
 
   useEffect(() => {
     if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
@@ -50,16 +51,16 @@ export default function Chat() {
     setCurrentChat(chat);
   };
 
-  const handleClose = () => {
-    // Clear user session and navigate to the login page
-    localStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY);
-    navigate("/login");
+  const handleCloseChat = () => {
+    setIsChatVisible(false); // Hide the chat component
   };
+
+  if (!isChatVisible) return null; // Render nothing if the chat is closed
 
   return (
     <>
       <Container>
-        <CloseButton onClick={handleClose}>×</CloseButton>
+        <CloseButton onClick={handleCloseChat}>×</CloseButton>
         <div className="container">
           <Contacts contacts={contacts} changeChat={handleChatChange} />
           {currentChat === undefined ? (
