@@ -150,14 +150,13 @@ const Container = styled.div`
           font-size: 1rem;
         }
       }
-    current-user {
       .avatar {
         img {
           height: 2rem;
         }
       }
-    }
-      
+  
+
     .contacts {
      .avatar {
         img {
