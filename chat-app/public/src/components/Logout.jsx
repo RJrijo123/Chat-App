@@ -2,21 +2,20 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { BiPowerOff } from "react-icons/bi";
 import styled from "styled-components";
-
+import axios from "axios";
+import { logoutRoute } from "../utils/APIRoutes";
 export default function Logout() {
   const navigate = useNavigate();
-
-  const handleClick = () => {
-    // Clear all user-related data from localStorage
-    localStorage.removeItem("user");  // Replace "user" with the key used to store user data
-
-    // Optionally, you can clear all data
-    // localStorage.clear();
-
-    // Redirect to the login page
-    navigate("/login");
+  const handleClick = async () => {
+    const id = await JSON.parse(
+      localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+    )._id;
+    const data = await axios.get(`${logoutRoute}/${id}`);
+    if (data.status === 200) {
+      localStorage.clear();
+      navigate("/login");
+    }
   };
-
   return (
     <Button onClick={handleClick}>
       <BiPowerOff />
