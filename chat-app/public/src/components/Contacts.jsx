@@ -28,9 +28,10 @@ export default function Contacts({ contacts, changeChat }) {
       <div className="brand">
         <img src={Logo} alt="logo" />
         <h3>ConvoR</h3>
-        <FaBars className="menu-icon" onClick={() => setIsContactsVisible(!isContactsVisible)} />
+        
       </div>
       <div className={`contacts ${isContactsVisible ? "show" : ""}`}>
+      <FaBars className="menu-icon" onClick={() => setIsContactsVisible(!isContactsVisible)} />
         {contacts.map((contact, index) => (
           <div
             key={contact._id}
