@@ -4,18 +4,31 @@ import { BiPowerOff } from "react-icons/bi";
 import styled from "styled-components";
 import axios from "axios";
 import { logoutRoute } from "../utils/APIRoutes";
+
 export default function Logout() {
   const navigate = useNavigate();
+
   const handleClick = async () => {
-    const id = await JSON.parse(
-      localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-    )._id;
-    const data = await axios.get(`${logoutRoute}/${id}`);
-    if (data.status === 200) {
-      localStorage.clear();
-      navigate("/login");
+    // Use the specific key for retrieving the current user
+    const user = localStorage.getItem("chat-app-current-user");
+
+    if (user) {
+      const { _id } = JSON.parse(user);
+
+      try {
+        const { status } = await axios.get(`${logoutRoute}/${_id}`);
+        
+        if (status === 200) {
+          // Clear localStorage and navigate to login page
+          localStorage.clear();
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Error during logout:", error);
+      }
     }
   };
+
   return (
     <Button onClick={handleClick}>
       <BiPowerOff />
