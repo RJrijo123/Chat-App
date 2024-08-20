@@ -8,24 +8,23 @@ import ChatContainer from "../components/ChatContainer";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
 
-
 export default function Chat() {
   const navigate = useNavigate();
   const socket = useRef();
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
-  useEffect(async () => {
+
+  useEffect(() => {
     if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
       navigate("/login");
     } else {
       setCurrentUser(
-        await JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-        )
+        JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
       );
     }
-  }, []);
+  }, [navigate]);
+
   useEffect(() => {
     if (currentUser) {
       socket.current = io(host);
@@ -33,22 +32,34 @@ export default function Chat() {
     }
   }, [currentUser]);
 
-  useEffect(async () => {
-    if (currentUser) {
-      if (currentUser.isAvatarImageSet) {
-        const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
-        setContacts(data.data);
-      } else {
-        navigate("/setAvatar");
+  useEffect(() => {
+    const fetchContacts = async () => {
+      if (currentUser) {
+        if (currentUser.isAvatarImageSet) {
+          const { data } = await axios.get(`${allUsersRoute}/${currentUser._id}`);
+          setContacts(data);
+        } else {
+          navigate("/setAvatar");
+        }
       }
-    }
-  }, [currentUser]);
+    };
+    fetchContacts();
+  }, [currentUser, navigate]);
+
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   };
+
+  const handleClose = () => {
+    // Clear user session and navigate to the login page
+    localStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY);
+    navigate("/login");
+  };
+
   return (
     <>
       <Container>
+        <CloseButton onClick={handleClose}>×</CloseButton>
         <div className="container">
           <Contacts contacts={contacts} changeChat={handleChatChange} />
           {currentChat === undefined ? (
@@ -56,9 +67,7 @@ export default function Chat() {
           ) : (
             <ChatContainer currentChat={currentChat} socket={socket} />
           )}
-         
         </div>
-        
       </Container>
     </>
   );
@@ -73,14 +82,33 @@ const Container = styled.div`
   gap: 1rem;
   align-items: center;
   background-color: #131324;
+  position: relative;
+
   .container {
     height: 85vh;
     width: 85vw;
     background-color: #00000076;
     display: grid;
     grid-template-columns: 25% 75%;
+    position: relative;
     @media screen and (min-width: 480px) and (max-width: 1080px) {
       grid-template-columns: 35% 65%;
     }
+  }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  background-color: transparent;
+  color: white;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1000;
+
+  &:hover {
+    color: red;
   }
 `;
