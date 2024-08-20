@@ -67,7 +67,9 @@ export default function Chat() {
               {currentChat === undefined ? (
                 <Welcome />
               ) : (
-                <ChatContainer currentChat={currentChat} socket={socket} />
+                <ChatContainerWrapper>
+                  <ChatContainer currentChat={currentChat} socket={socket} />
+                </ChatContainerWrapper>
               )}
             </div>
           )}
@@ -101,8 +103,20 @@ const Container = styled.div`
   }
 
   .chat-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     position: relative;
   }
+`;
+
+const ChatContainerWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const CloseButton = styled.button`
@@ -110,7 +124,7 @@ const CloseButton = styled.button`
   top: 10px;
   right: 20px;
   background-color: transparent;
-  color: black;
+  color: white;
   border: none;
   font-size: 2rem;
   cursor: pointer;
