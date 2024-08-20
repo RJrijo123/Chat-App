@@ -146,10 +146,14 @@ const Container = styled.div`
     @media screen and (min-width: 480px) and (max-width: 1080px) {
       gap: 0.5rem;
       .username {
-        h2 {
+        h2  {
           font-size: 1rem;
         }
+        h3 {
+          font-size: 0.5rem;
+        }
       }
+
     }
   }
 `;
