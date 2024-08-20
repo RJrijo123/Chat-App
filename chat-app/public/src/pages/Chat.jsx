@@ -56,8 +56,9 @@ export default function Chat() {
           ) : (
             <ChatContainer currentChat={currentChat} socket={socket} />
           )}
+          <Logout />
         </div>
-        <Logout />
+        
       </Container>
     </>
   );
