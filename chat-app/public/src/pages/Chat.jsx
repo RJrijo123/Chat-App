@@ -80,7 +80,7 @@ const Container = styled.div`
     display: grid;
     grid-template-columns: 25% 75%;
     @media screen and (min-width: 480px) and (max-width: 1080px) {
-      grid-template-columns: 50% 50%;
+      grid-template-columns: 40% 60%;
     }
   }
 `;
