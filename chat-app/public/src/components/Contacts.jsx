@@ -149,7 +149,9 @@ const Container = styled.div`
         h2  {
           font-size: 1rem;
         }
-        h3 {
+      }
+      .username {
+      h3 {
           font-size: 0.5rem;
         }
       }
