@@ -112,6 +112,7 @@ const Container = styled.div`
   background-color: #131324;
   height: 100vh;
   width: 100vw;
+  padding: 1rem;
 
   .loader {
     max-inline-size: 100%;
@@ -120,41 +121,78 @@ const Container = styled.div`
   .title-container {
     h1 {
       color: white;
+      font-size: 1.5rem; // Adjusted font size for mobile
+      text-align: center; // Center-align text
     }
   }
+
   .avatars {
     display: flex;
-    gap: 2rem;
+    flex-wrap: wrap; // Allow avatars to wrap to the next line
+    gap: 1rem; // Adjusted gap for mobile
+    justify-content: center; // Center avatars in the container
 
     .avatar {
-      border: 0.4rem solid transparent;
-      padding: 0.4rem;
-      border-radius: 5rem;
+      border: 0.3rem solid transparent; // Adjusted border size for mobile
+      padding: 0.3rem; // Adjusted padding for mobile
+      border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
-      transition: 0.5s ease-in-out;
+      transition: 0.3s ease-in-out; // Adjusted transition time
       img {
-        height: 6rem;
-        transition: 0.5s ease-in-out;
+        height: 4rem; // Adjusted image height for mobile
+        width: 4rem; // Ensure image is square
+        transition: 0.3s ease-in-out;
       }
     }
     .selected {
-      border: 0.4rem solid #4e0eff;
+      border: 0.3rem solid #4e0eff; // Adjusted border size for selected avatar
     }
   }
+
   .submit-btn {
     background-color: #4e0eff;
     color: white;
-    padding: 1rem 2rem;
+    padding: 0.75rem 1.5rem; // Adjusted padding for mobile
     border: none;
     font-weight: bold;
     cursor: pointer;
     border-radius: 0.4rem;
-    font-size: 1rem;
+    font-size: 0.9rem; // Adjusted font size for mobile
     text-transform: uppercase;
     &:hover {
       background-color: #4e0eff;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .title-container {
+      h1 {
+        font-size: 1.25rem; // Further reduce font size for tablets
+      }
+    }
+    .avatars {
+      gap: 0.5rem; // Further reduce gap for tablets
+    }
+    .submit-btn {
+      padding: 0.5rem 1rem; // Further reduce padding for tablets
+      font-size: 0.8rem; // Further reduce font size for tablets
+    }
+  }
+
+  @media (max-width: 480px) {
+    .title-container {
+      h1 {
+        font-size: 1rem; // Further reduce font size for mobile
+      }
+    }
+    .avatars {
+      gap: 0.25rem; // Further reduce gap for mobile
+    }
+    .submit-btn {
+      padding: 0.5rem 0.75rem; // Further reduce padding for mobile
+      font-size: 0.7rem; // Further reduce font size for mobile
     }
   }
 `;
