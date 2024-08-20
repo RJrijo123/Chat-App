@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import Logout from "./Logout";
 
@@ -8,20 +7,17 @@ export default function Contacts({ contacts, changeChat }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
-  const navigate = useNavigate(); // Hook for navigation
-  
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY));
+  useEffect(async () => {
+    const data = await JSON.parse(
+      localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+    );
     setCurrentUserName(data.username);
     setCurrentUserImage(data.avatarImage);
   }, []);
-  
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
     changeChat(contact);
-    navigate("/chat"); // Navigate to the chat page
   };
-
   return (
     <>
       {currentUserImage && currentUserImage && (
@@ -31,37 +27,46 @@ export default function Contacts({ contacts, changeChat }) {
             <h3>ConvoR</h3>
           </div>
           <div className="contacts">
-            {contacts.map((contact, index) => (
-              <div
-                key={contact._id}
-                className={`contact ${index === currentSelected ? "selected" : ""}`}
-                onClick={() => changeCurrentChat(index, contact)}
-              >
-                <div className="avatar">
-                  <img src={`data:image/svg+xml;base64,${contact.avatarImage}`} alt="" />
+            {contacts.map((contact, index) => {
+              return (
+                <div
+                  key={contact._id}
+                  className={`contact ${
+                    index === currentSelected ? "selected" : ""
+                  }`}
+                  onClick={() => changeCurrentChat(index, contact)}
+                >
+                  <div className="avatar">
+                    <img
+                      src={`data:image/svg+xml;base64,${contact.avatarImage}`}
+                      alt=""
+                    />
+                  </div>
+                  <div className="username">
+                    <h3>{contact.username}</h3>
+                  </div>
                 </div>
-                <div className="username">
-                  <h3>{contact.username}</h3>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div className="current-user">
-            <Logout />
+          <Logout />
             <div className="avatar">
-              <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="avatar" />
+              <img
+                src={`data:image/svg+xml;base64,${currentUserImage}`}
+                alt="avatar"
+              />
             </div>
             <div className="username">
               <h2>{currentUserName}</h2>
             </div>
+            
           </div>
         </Container>
       )}
     </>
   );
 }
-
-
 const Container = styled.div`
   display: grid;
   grid-template-rows: 10% 75% 15%;
