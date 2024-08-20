@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Logo from "../assets/logo.png";
 import Logout from "./Logout";
-import { FaBars } from "react-icons/fa";
+import { FaBars } from "react-icons/fa"; // Import icon for menu
 
 export default function Contacts({ contacts, changeChat }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isContactsVisible, setIsContactsVisible] = useState(false);
 
   useEffect(() => {
     const data = JSON.parse(
@@ -21,38 +21,35 @@ export default function Contacts({ contacts, changeChat }) {
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
     changeChat(contact);
-    setIsDrawerOpen(false); // Close the drawer
   };
 
   return (
     <Container>
-      <div className="header">
+      <div className="brand">
         <img src={Logo} alt="logo" />
         <h3>ConvoR</h3>
-        <FaBars className="menu-icon" onClick={() => setIsDrawerOpen(!isDrawerOpen)} />
+        <FaBars className="menu-icon" onClick={() => setIsContactsVisible(!isContactsVisible)} />
       </div>
-      <div className={`drawer ${isDrawerOpen ? "open" : ""}`}>
-        <div className="contacts">
-          {contacts.map((contact, index) => (
-            <div
-              key={contact._id}
-              className={`contact ${
-                index === currentSelected ? "selected" : ""
-              }`}
-              onClick={() => changeCurrentChat(index, contact)}
-            >
-              <div className="avatar">
-                <img
-                  src={`data:image/svg+xml;base64,${contact.avatarImage}`}
-                  alt=""
-                />
-              </div>
-              <div className="username">
-                <h3>{contact.username}</h3>
-              </div>
+      <div className={`contacts ${isContactsVisible ? "show" : ""}`}>
+        {contacts.map((contact, index) => (
+          <div
+            key={contact._id}
+            className={`contact ${
+              index === currentSelected ? "selected" : ""
+            }`}
+            onClick={() => changeCurrentChat(index, contact)}
+          >
+            <div className="avatar">
+              <img
+                src={`data:image/svg+xml;base64,${contact.avatarImage}`}
+                alt=""
+              />
             </div>
-          ))}
-        </div>
+            <div className="username">
+              <h3>{contact.username}</h3>
+            </div>
+          </div>
+        ))}
       </div>
       <div className="current-user">
         <Logout />
@@ -69,7 +66,6 @@ export default function Contacts({ contacts, changeChat }) {
     </Container>
   );
 }
-
 
 const Container = styled.div`
   display: grid;
