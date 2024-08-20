@@ -150,12 +150,11 @@ const Container = styled.div`
           font-size: 1rem;
         }
       }
-      .username {
-      h3 {
-          font-size: 0.5rem;
+      .avatar {
+        img {
+          height: 1.5rem;
         }
       }
-
     }
   }
 `;
