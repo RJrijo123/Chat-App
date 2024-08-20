@@ -72,78 +72,85 @@ export default function Contacts({ contacts, changeChat }) {
 
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+  display: grid;
+  grid-template-rows: 10% 75% 15%;
+  overflow: hidden;
   background-color: #080420;
 
-  .header {
+  .brand {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    background-color: #131324;
+    gap: 1rem;
+    justify-content: center;
+    position: relative; // Added to position menu icon
 
     img {
       height: 2rem;
     }
+
     h3 {
       color: white;
       text-transform: uppercase;
     }
+
     .menu-icon {
+      display: none; // Hide menu icon by default
       color: white;
       font-size: 1.5rem;
       cursor: pointer;
-      display: none; /* Hidden by default */
+      position: absolute;
+      right: 1rem;
     }
   }
 
-  .drawer {
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 80%;
-    height: 100%;
-    background-color: #080420;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-    transition: left 0.3s ease;
-    overflow-y: auto;
-    z-index: 1000;
+  .contacts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+    gap: 0.8rem;
+    transition: transform 0.3s ease-in-out; // Transition for sliding effect
 
-    &.open {
-      left: 0;
+    &::-webkit-scrollbar {
+      width: 0.2rem;
+      &-thumb {
+        background-color: #ffffff39;
+        width: 0.1rem;
+        border-radius: 1rem;
+      }
     }
 
-    .contacts {
+    .contact {
+      background-color: #ffffff34;
+      min-height: 5rem;
+      cursor: pointer;
+      width: 90%;
+      border-radius: 0.2rem;
+      padding: 0.4rem;
       display: flex;
-      flex-direction: column;
+      gap: 1rem;
       align-items: center;
-      gap: 0.8rem;
-      margin-top: 2rem;
+      transition: 0.5s ease-in-out;
 
-      .contact {
-        background-color: #ffffff34;
-        min-height: 5rem;
-        cursor: pointer;
-        width: 90%;
-        border-radius: 0.2rem;
-        padding: 0.4rem;
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        transition: 0.5s ease-in-out;
-
-        .avatar img {
+      .avatar {
+        img {
           height: 3rem;
         }
-        .username h3 {
+      }
+
+      .username {
+        h3 {
           color: white;
         }
       }
-      .selected {
-        background-color: #9a86f3;
-      }
+    }
+
+    .selected {
+      background-color: #9a86f3;
+    }
+
+    &.show {
+      transform: translateX(0); // Show the contacts list
     }
   }
 
@@ -153,23 +160,50 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     gap: 2rem;
-    padding: 1rem;
-    position: relative;
-    z-index: 10;
 
-    .avatar img {
-      height: 4rem;
-      max-inline-size: 100%;
+    .avatar {
+      img {
+        height: 4rem;
+        max-inline-size: 100%;
+      }
     }
-    .username h2 {
-      color: white;
+
+    .username {
+      h2 {
+        color: white;
+      }
     }
   }
 
-  /* Responsive Styles */
-  @media (max-width: 720px) {
-    .header .menu-icon {
-      display: block; /* Show menu icon on mobile */
+  @media screen and (max-width: 768px) {
+    .contacts {
+      position: fixed;
+      top: 10%;
+      right: 0;
+      width: 80%;
+      height: 90%;
+      background-color: #080420;
+      transform: translateX(100%); // Hide the contacts list by default
+      z-index: 1000;
+      overflow: auto;
+      border-left: 1px solid #ffffff39;
+    }
+
+    .contacts.show {
+      transform: translateX(0); // Show the contacts list when toggled
+    }
+
+    .brand .menu-icon {
+      display: block; // Show menu icon on mobile
+    }
+
+    .current-user {
+      gap: 1rem;
+      .username {
+        h2 {
+          font-size: 1rem;
+        }
+      }
     }
   }
 `;
